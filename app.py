@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -27,7 +27,6 @@ def register():
         email = request.form['email']
         password = generate_password_hash(request.form['password'])
 
-        # Check if user already exists
         if users_collection.find_one({"email": email}):
             return "User already exists!"
 
@@ -43,7 +42,7 @@ def register():
     return render_template('register.html')
 
 # -------------------------------
-# Login Route
+# Login Route (UPDATED)
 # -------------------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -56,23 +55,37 @@ def login():
         if user and check_password_hash(user['password'], password):
             session['user'] = user['name']
             session['role'] = user['role']
-            return redirect('/dashboard')
-        else:
-            return "Invalid Email or Password!"
+
+            # Role-based redirect
+            if user['role'] == 'admin':
+                return redirect('/admin')
+            else:
+                return redirect('/dashboard')
+
+        return "Invalid Email or Password!"
 
     return render_template('login.html')
 
 # -------------------------------
-# Dashboard Route
+# User Dashboard (PROTECTED)
 # -------------------------------
 @app.route('/dashboard')
 def dashboard():
-    if 'user' in session:
+    if 'user' in session and session['role'] == 'user':
         return render_template('dashboard.html', user=session['user'], role=session['role'])
-    return redirect('/login')
+    return "Access Denied"
 
 # -------------------------------
-# Logout Route
+# Admin Panel (NEW)
+# -------------------------------
+@app.route('/admin')
+def admin():
+    if 'user' in session and session['role'] == 'admin':
+        return render_template('admin.html', user=session['user'])
+    return "Access Denied"
+
+# -------------------------------
+# Logout
 # -------------------------------
 @app.route('/logout')
 def logout():
