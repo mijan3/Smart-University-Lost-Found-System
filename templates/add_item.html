@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+
+<input name="title" class="form-control mb-2" placeholder="Title">
+<textarea name="description" class="form-control mb-2"></textarea>
+
+<select name="status" class="form-control mb-2">
+<option value="lost">Lost</option>
+<option value="found">Found</option>
+</select>
+
+<input type="file" name="images" multiple class="form-control mb-2">
+
+<button class="btn btn-success">Submit</button>
+
+</form>
+
+{% endblock %}

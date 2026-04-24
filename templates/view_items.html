@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% for item in items %}
+<div class="card p-3 mb-3">
+
+{% for img in item.images %}
+<img src="/uploads/{{ img }}" width="200">
+{% endfor %}
+
+<h5>{{ item.title }}</h5>
+<p>{{ item.description }}</p>
+
+{% if not item.claimed_by %}
+<a href="/claim/{{ item._id }}" class="btn btn-success">Claim</a>
+{% else %}
+<p>Claimed by {{ item.claimed_by }}</p>
+{% endif %}
+
+{% for c in item.comments %}
+<p><b>{{ c.user }}</b>: {{ c.text }}</p>
+{% endfor %}
+
+<form method="POST" action="/comment/{{ item._id }}">
+<input name="comment" class="form-control mb-2">
+<button class="btn btn-primary">Comment</button>
+</form>
+
+</div>
+{% endfor %}
+
+{% endblock %}

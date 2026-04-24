@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-3">Manage Items</h3>
+
+{% for item in items %}
+<div class="card p-3 mb-3 shadow-sm">
+
+    <!-- Images -->
+    {% for img in item.images %}
+        <img src="/uploads/{{ img }}" width="150" class="mb-2">
+    {% endfor %}
+
+    <h5>{{ item.title }}</h5>
+    <p>{{ item.description }}</p>
+
+    <!-- Status -->
+    {% if item.approved %}
+        <span class="badge bg-success">Approved</span>
+    {% else %}
+        <span class="badge bg-warning text-dark">Pending</span>
+    {% endif %}
+
+    <!-- Claim info -->
+    {% if item.claimed_by %}
+        <p class="text-danger">Claimed by {{ item.claimed_by }}</p>
+    {% endif %}
+
+    <div class="mt-2">
+
+        {% if not item.approved %}
+        <a href="/approve/{{ item._id }}" class="btn btn-success btn-sm">
+            ✅ Approve
+        </a>
+        {% endif %}
+
+        <a href="/delete/{{ item._id }}" class="btn btn-danger btn-sm">
+            ❌ Delete
+        </a>
+
+    </div>
+
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Panel</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
 
-    <h2>Admin Panel</h2>
+<h3 class="mb-3">Admin Dashboard</h3>
 
-    <p>Welcome Admin: {{ user }}</p>
+<div class="card p-4 shadow-sm">
 
-    <ul>
-        <li>Manage Users</li>
-        <li>Approve Items</li>
-        <li>Delete Items</li>
-    </ul>
+    <h5>Admin Controls</h5>
+    <p>Manage all lost & found items from here.</p>
 
-    <br>
-    <a href="/logout">Logout</a>
+    <a href="/admin/items" class="btn btn-warning">
+        📋 Manage Items
+    </a>
 
-</body>
-</html>
+</div>
+
+{% endblock %}
